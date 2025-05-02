@@ -24,11 +24,11 @@ export default function NoteList() {
 
   return (
     <div className="bg-amber-50/80 min-h-screen">
-      <div className="p-6 max-w-4xl mx-auto ">
-        <div className="flex justify-between items-end mb-10">
+      <div className="px-5 max-w-4xl mx-auto ">
+        <div className="flex h-[85px] justify-between items-center mb-3">
           <div className="flex gap-5 items-center  ">
             <img
-              src="/public/quicktime-nobg.png"
+              src="https://raw.githubusercontent.com/fajriyan/quick-notes/refs/heads/main/public/quicktime-nobg.png"
               className="w-10 object-contain"
               alt="quictime"
               width="auto"
@@ -42,7 +42,7 @@ export default function NoteList() {
 
           <button
             onClick={addNote}
-            className="px-4 py-2 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-2 items-center"
+            className="sm:px-4 sm:py-2 p-1 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-2 items-center"
           >
             <svg
               class="w-6 h-6 text-white"
@@ -61,7 +61,9 @@ export default function NoteList() {
                 d="M5 12h14m-7 7V5"
               />
             </svg>
+            <span className="hidden sm:block">
             Tambah Note
+            </span>
           </button>
         </div>
 

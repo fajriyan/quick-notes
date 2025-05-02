@@ -95,14 +95,14 @@ export default function NoteDetail() {
 
   return (
     <div className="bg-amber-50/80 min-h-screen">
-      <div className="px-6 pb-10 max-w-4xl mx-auto">
-        <div className="flex py-6 justify-between items-center mb-5 sticky top-0 bg-amber-50/80">
+      <div className="px-5 pb-10 max-w-4xl mx-auto">
+        <div className="flex h-[85px] justify-between items-center mb-3 sticky top-0 bg-amber-50/80">
           <button
             onClick={() => navigate("/")}
-            className="px-4 py-2 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-1 items-center"
+            className="p-1 sm:px-4 sm:py-2 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-1 items-center"
           >
             <svg
-              class="w-5 h-5 text-white"
+              class="w-6 h-6 text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -118,7 +118,7 @@ export default function NoteDetail() {
                 d="m15 19-7-7 7-7"
               />
             </svg>
-            Kembali
+            <span className="hidden sm:block">Kembali</span>
           </button>
           <div className="">
             {isEditingTitle ? (
@@ -127,7 +127,7 @@ export default function NoteDetail() {
                   type="text"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="border-b p-1 border-amber-200 w-[450px]"
+                  className="border-b p-1 border-amber-200 w-[200px] sm:w-[450px]"
                 />
                 <button
                   onClick={handleTitleChange}
@@ -142,7 +142,7 @@ export default function NoteDetail() {
                   onClick={() => setIsEditingTitle(true)}
                   className="cursor-pointer"
                 >
-                  <h2 className="text-[16px] font-semibold line-clamp-1 w-[450px]">
+                  <h2 className="text-[16px] font-semibold line-clamp-1 w-[200px] sm:w-[450px]">
                     {note.title}
                   </h2>
                 </button>
@@ -152,10 +152,10 @@ export default function NoteDetail() {
 
           <button
             onClick={deleteNote}
-            className="px-4 py-2 bg-red-800 hover:bg-red-900 text-white rounded-full cursor-pointer flex gap-2 items-center"
+            className="p-1 sm:px-4 sm:py-2 bg-red-800 hover:bg-red-900 text-white rounded-full cursor-pointer flex gap-2 items-center"
           >
             <svg
-              class="w-5 h-5 text-white"
+              class="w-6 h-6 text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -171,7 +171,7 @@ export default function NoteDetail() {
                 d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
               />
             </svg>
-            Hapus
+            <span className="hidden sm:block">Hapus</span>
           </button>
         </div>
 
@@ -201,7 +201,7 @@ export default function NoteDetail() {
           </table>
         </div>
 
-        <div className="space-y-2 mb-4 border p-3 border-amber-200 h-[60vh] overflow-y-auto rounded-md">
+        <div className="space-y-2 border p-3 border-amber-200 h-[62.2vh] overflow-y-auto rounded-md">
           {note.items.map((item) => (
             <div key={item.id} className="flex items-center gap-3">
               <span className="text-sm text-gray-400 w-[60px]">
@@ -258,6 +258,17 @@ export default function NoteDetail() {
               placeholder="Ketik disini..."
             />
           </div>
+        </div>
+
+        <div className="text-center text-xs mt-2 text-amber-900/80">
+          quicktime notes by{" "}
+          <a
+            href="https://fajriyan.pages.dev/"
+            target="_blank"
+            className="underline"
+          >
+            fajriyan
+          </a>
         </div>
       </div>
     </div>
