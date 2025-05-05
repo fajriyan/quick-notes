@@ -1,25 +1,52 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { signInWithPopup, provider, signOut, db, auth } from "../firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import { useAuth } from "../context/AuthContext";
 
 export default function NoteList() {
+  const { user } = useAuth();
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("notes")) || [];
-    setNotes(saved);
-  }, []);
+    if (user) {
+      const fetchNotes = async () => {
+        const colRef = collection(db, "users", user.uid, "notes");
+        const snapshot = await getDocs(colRef);
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotes(data);
+      };
+      fetchNotes();
+    } else {
+      const saved = JSON.parse(localStorage.getItem("notes")) || [];
+      setNotes(saved);
+    }
+  }, [user]);
 
-  const addNote = () => {
+  const addNote = async () => {
     const newNote = {
-      id: Date.now(),
       title: `Note ${Math.floor(Math.random() * 2000)}`,
       items: [],
     };
-    const updated = [...notes, newNote];
-    localStorage.setItem("notes", JSON.stringify(updated));
-    setNotes(updated);
-    navigate(`/note/${newNote.id}`);
+
+    if (user) {
+      const docRef = await addDoc(
+        collection(db, "users", user.uid, "notes"),
+        newNote
+      );
+      setNotes([...notes, { ...newNote, id: docRef.id }]);
+      navigate(`/note/${docRef.id}`);
+    } else {
+      const localNote = { id: Date.now(), ...newNote };
+      const updated = [...notes, localNote];
+      localStorage.setItem("notes", JSON.stringify(updated));
+      setNotes(updated);
+      navigate(`/note/${localNote.id}`);
+    }
   };
 
   return (
@@ -29,42 +56,66 @@ export default function NoteList() {
           <div className="flex gap-5 items-center  ">
             <img
               src="https://raw.githubusercontent.com/fajriyan/quick-notes/refs/heads/main/public/quicktime-nobg.png"
-              className="w-10 object-contain"
-              alt="quictime"
+              className="w-16 object-contain"
+              alt="quicknote"
               width="auto"
               height="auto"
+              loading="eager"
+              title="quicknote"
             />
             <div className="">
-              <h1 className="text-2xl font-bold">Quicktime Notes</h1>
-              <div className="text-xs">Tulis Catatan dengan Detail</div>
+              <p className="font-semibold">
+                {user?.displayName || "QuickNote"}
+              </p>
+              <p className="text-xs">
+                {user?.email || "Tulis Catatan Kecil Anda"}
+              </p>
             </div>
           </div>
 
-          <button
-            onClick={addNote}
-            className="sm:px-4 sm:py-2 p-1 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-2 items-center"
-          >
-            <svg
-              class="w-6 h-6 text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
+          <div className="flex gap-2 items-center">
+            <button
+              className={`pr-2  h-[40px]  border hover:shadow-md rounded-full cursor-pointer flex items-center font-semibold ${
+                user ? "bg-rose-300 border-rose-300" : "border-cyan-700"
+              }`}
+              onClick={() =>
+                user ? signOut(auth) : signInWithPopup(auth, provider)
+              }
             >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 12h14m-7 7V5"
+              <img
+                src={"https://img.icons8.com/color/512/google-logo.png"}
+                className=" object-contain w-[40px] h-[25px]"
+                alt="quictime"
+                width="auto"
+                height="auto"
+                loading="lazy"
+                title="quicknote"
               />
-            </svg>
-            <span className="hidden sm:block">
-            Tambah Note
-            </span>
-          </button>
+              {user ? "Logout" : "Login"}
+            </button>
+            <button
+              onClick={addNote}
+              className="sm:p-2 p-1 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h14m-7 7V5"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div className="space-y-2 border p-3 border-amber-200  rounded-md h-[80vh] overflow-y-auto">
@@ -79,7 +130,16 @@ export default function NoteList() {
           ))}
         </div>
 
-        <div className="text-center text-xs mt-2 text-amber-900/80">quicktime notes by <a href="https://fajriyan.pages.dev/" target="_blank" className="underline">fajriyan</a></div>
+        <div className="text-center text-xs mt-2 text-amber-900/80">
+          quicktime notes by{" "}
+          <a
+            href="https://fajriyan.pages.dev/"
+            target="_blank"
+            className="underline"
+          >
+            fajriyan
+          </a>
+        </div>
       </div>
     </div>
   );
