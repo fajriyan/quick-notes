@@ -51,8 +51,8 @@ export default function NoteList() {
 
   return (
     <div className="bg-amber-50/80 min-h-screen">
-      <div className="px-5 max-w-4xl mx-auto ">
-        <div className="flex h-[85px] justify-between items-center mb-3">
+      <div className="px-5 max-w-4xl mx-auto pt-5 sm:pt-0">
+        <div className="sm:flex h-[85px] justify-between items-center mb-3 hidden">
           <div className="flex gap-5 items-center  ">
             <img
               src="https://raw.githubusercontent.com/fajriyan/quick-notes/refs/heads/main/public/quicktime-nobg.png"
@@ -118,7 +118,7 @@ export default function NoteList() {
           </div>
         </div>
 
-        <div className="space-y-2 border p-3 border-amber-200  rounded-md h-[80vh] overflow-y-auto">
+        <div className="space-y-2 border p-3 border-amber-200  rounded-md h-[85dvh] overflow-y-auto">
           {notes.map((note) => (
             <div
               key={note.id}
@@ -130,7 +130,7 @@ export default function NoteList() {
           ))}
         </div>
 
-        <div className="text-center text-xs mt-2 text-amber-900/80">
+        <div className="text-center text-xs mt-2 text-amber-900/80 hidden sm:block">
           quicktime notes by{" "}
           <a
             href="https://fajriyan.pages.dev/"
@@ -139,6 +139,74 @@ export default function NoteList() {
           >
             fajriyan
           </a>
+        </div>
+      </div>
+
+      <div className="fixed bottom-0 w-full flex justify-center">
+        <div className=" bg-amber-100/50 border border-amber-300 rounded-t-2xl w-full flex h-[70px] justify-between items-center sm:hidden px-5">
+          <div className="flex gap-2 items-center  ">
+            <img
+              src="https://raw.githubusercontent.com/fajriyan/quick-notes/refs/heads/main/public/quicktime-nobg.png"
+              className="w-12 object-contain"
+              alt="quicknote"
+              width="auto"
+              height="auto"
+              loading="eager"
+              title="quicknote"
+            />
+            <div className="">
+              <p className="font-semibold">
+                {user?.displayName || "QuickNote"}
+              </p>
+              <p className="text-xs">
+                {user?.email || "Tulis Catatan Kecil Anda"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <button
+              className={`h-[40px]  border hover:shadow-md rounded-full cursor-pointer flex items-center font-semibold ${
+                user ? "bg-rose-300 border-rose-300" : "border-cyan-700"
+              }`}
+              onClick={() =>
+                user ? signOut(auth) : signInWithPopup(auth, provider)
+              }
+            >
+              <img
+                src={"https://img.icons8.com/color/512/google-logo.png"}
+                className=" object-contain w-[40px] h-[25px]"
+                alt="quictime"
+                width="auto"
+                height="auto"
+                loading="lazy"
+                title="quicknote"
+              />
+              {user ? "Logout" : null}
+            </button>
+            <button
+              onClick={addNote}
+              className="sm:p-2 p-1 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h14m-7 7V5"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
