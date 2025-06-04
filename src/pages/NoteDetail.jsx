@@ -9,6 +9,7 @@ export default function NoteDetail() {
   const { id } = useParams();
   const { user } = useAuth();
   const [notes, setNotes] = useState([]);
+
   const [note, setNote] = useState(null);
   const [newItem, setNewItem] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -231,43 +232,70 @@ export default function NoteDetail() {
           </div>
 
           {/* Display metadata */}
-          <div className="text-sm text-gray-500 mb-4 border p-3 border-amber-200 rounded-md">
-            <table className="w-full text-sm text-cyan-800">
-              <tbody>
-                <tr>
-                  <td className="py-1 pr-4 font-bold w-[80px]">Judul</td>
-                  <td className="py-1">{note?.title}</td>
-                </tr>
-                <tr>
-                  <td className="py-1 pr-4 font-bold">Kata</td>
-                  <td className="py-1">{countWords(note?.items)}</td>
-                </tr>
-                <tr>
-                  <td className="py-1 pr-4 font-bold">Tanggal</td>
-                  <td className="py-1">
-                    {/* {new Date(note.lastEdited).toLocaleString("id-ID")} */}
-                    <td className="py-1">
-                      {note?.lastEdited
-                        ? new Date(note.lastEdited).toLocaleString("id-ID", {
-                            dateStyle: "full",
-                            timeStyle: "short",
-                          })
-                        : "-"}
-                    </td>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="py-1 pr-4 font-bold">Item</td>
-                  <td className="py-1">{note?.items.length}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="text-sm text-gray-500 mb-4 border p-3 border-amber-200 bg-amber-100/50 rounded-md">
+            <div className="flex flex-wrap sm:flex-nowrap gap-2">
+              <div className="py-1 px-2 border rounded-lg flex gap-2 w-full sm:w-[50%] lg:w-[60%] overflow-x-auto items-center">
+                <p className="py-1 font-semibold">{note?.title}</p>
+              </div>
+              <div className="py-1 px-2 border rounded-lg flex gap-2 sm:w-[25%] lg:w-[20%] items-center">
+                <p className="py-1 font-semibold">
+                  {note?.lastEdited
+                    ? new Date(note.lastEdited).toLocaleString("id-ID", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })
+                    : "-"}
+                </p>
+              </div>
+              <div className="py-1 px-2 border rounded-lg flex gap-2 sm:w-[10%] items-center">
+                <svg
+                  class="w-6 h-6 text-gray-800"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 6.2V5h11v1.2M8 5v14m-3 0h6m2-6.8V11h8v1.2M17 11v8m-1.5 0h3"
+                  />
+                </svg>
+
+                <p className="py-1 font-semibold">{countWords(note?.items)}</p>
+              </div>
+              <div className="py-1 px-2 border rounded-lg flex gap-2 sm:w-[10%] items-center">
+                <svg
+                  class="w-6 h-6 text-gray-800 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M18 6H6m12 4H6m12 4H6m12 4H6"
+                  />
+                </svg>
+
+                <p className="py-1 font-semibold">{note?.items.length}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2 border p-3 border-amber-200 h-[67dvh] sm:h-[62.2vh] overflow-y-auto rounded-md">
+          <div className="space-y-2 border p-3 border-amber-200  h-[67dvh] sm:h-[72dvh] overflow-y-auto rounded-md">
             {note?.items.map((item) => (
-              <div key={item.id} className="flex items-center gap-3">
-                <span className="text-sm text-gray-400 w-[60px]">
+              <div key={item.id} className="flex items-start gap-3">
+                <span className="text-xs sm:text-sm text-gray-400 w-[60px] mt-1">
                   {item?.time}
                 </span>
                 <div
@@ -280,10 +308,10 @@ export default function NoteDetail() {
                 </div>
                 <button
                   onClick={() => deleteItem(item.id)}
-                  className="text-red-400 w-[3%]"
+                  className="text-red-400 sm:w-[3%]"
                 >
                   <svg
-                    className="w-5 h-5 text-red-700 hover:text-red-800 cursor-pointer"
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-red-700 hover:text-red-800 cursor-pointer"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -304,7 +332,7 @@ export default function NoteDetail() {
             ))}
 
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-400 w-[60px]">
+              <span className="text-xs sm:text-sm text-gray-400 w-[60px]">
                 {new Date().toLocaleTimeString("id-ID", { hour12: false })}
               </span>
               <textarea
@@ -336,7 +364,7 @@ export default function NoteDetail() {
         </div>
 
         <div className="fixed bottom-0 w-full flex justify-center">
-          <div className=" bg-amber-100/50 border border-amber-300 rounded-t-2xl w-full flex h-[70px] justify-between items-center sm:hidden px-5">
+          <div className=" bg-amber-100/50 border-t border-amber-300 w-full flex h-[70px] justify-between items-center sm:hidden px-5">
             <button
               onClick={() => navigate("/")}
               className="p-1 sm:px-4 sm:py-2 bg-cyan-800 hover:bg-cyan-900 text-white rounded-full cursor-pointer flex gap-1 items-center"

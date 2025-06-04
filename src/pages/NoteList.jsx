@@ -143,7 +143,7 @@ export default function NoteList() {
       </div>
 
       <div className="fixed bottom-0 w-full flex justify-center">
-        <div className=" bg-amber-100/50 border border-amber-300 rounded-t-2xl w-full flex h-[70px] justify-between items-center sm:hidden px-5">
+        <div className=" bg-amber-100/50 border-t border-amber-300 w-full flex h-[70px] justify-between items-center sm:hidden px-5">
           <div className="flex gap-2 items-center  ">
             <img
               src="https://raw.githubusercontent.com/fajriyan/quick-notes/refs/heads/main/public/quicktime-nobg.png"
