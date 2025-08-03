@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { signInWithPopup, provider, signOut, db, auth } from "../firebase";
 import { collection, getDocs, addDoc } from "firebase/firestore";
@@ -73,10 +73,10 @@ export default function NoteList() {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 items-center">
             <button
-              className={`pr-2  h-[40px]  border hover:shadow-md rounded-full cursor-pointer flex items-center font-semibold ${
-                user ? "bg-rose-300 border-rose-300" : "border-cyan-700"
+              className={`  h-[40px]  border hover:shadow-md rounded-full cursor-pointer flex items-center justify-center font-semibold ${
+                user ? "bg-rose-300 border-rose-300 pr-2" : "border-cyan-700"
               }`}
               onClick={() =>
                 user ? signOut(auth) : signInWithPopup(auth, provider)
@@ -91,7 +91,7 @@ export default function NoteList() {
                 loading="lazy"
                 title="quicknote"
               />
-              {user ? "Logout" : "Login"}
+              {user ? "Logout" : null}
             </button>
             <button
               onClick={addNote}
@@ -115,6 +115,28 @@ export default function NoteList() {
                 />
               </svg>
             </button>
+            <Link
+              to="/whiteboard"
+              className="sm:p-2 p-1 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"
+                />
+              </svg>
+            </Link>
           </div>
         </div>
 
@@ -186,7 +208,7 @@ export default function NoteList() {
             </button>
             <button
               onClick={addNote}
-              className="sm:p-2 p-1 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
+              className="sm:p-2 p-1.5 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
             >
               <svg
                 className="w-6 h-6 text-white"
@@ -206,6 +228,28 @@ export default function NoteList() {
                 />
               </svg>
             </button>
+            <Link
+              to="/whiteboard"
+              className="sm:p-2 p-1.5 bg-cyan-800 hover:bg-cyan-900 hover:shadow-md text-white rounded-full cursor-pointer"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"
+                />
+              </svg>
+            </Link>
           </div>
         </div>
       </div>
